@@ -70,7 +70,8 @@ func solvePartOne(filePath string) (elf, result int) {
 
 func findTopNElves(elves map[int]int, n int) (maxTotal int) {
 	maxTotal = 0
-	for i := 0; i < n; i++ {
+	newN := int(math.Min(float64(n), float64(len(elves))))
+	for i := 0; i < newN; i++ {
 		elf, total := findMaxElf(elves)
 		delete(elves, elf)
 		maxTotal += total
