@@ -63,7 +63,6 @@ func remove(s []int, index int) []int {
 }
 
 func findTopNElves(elves []int, n int) (maxTotal int) {
-	maxTotal = 0
 	newN := int(math.Min(float64(n), float64(len(elves))))
 	for i := 0; i < newN; i++ {
 		elf, total := findMaxElf(elves)
