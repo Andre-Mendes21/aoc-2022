@@ -9,7 +9,7 @@ import (
 )
 
 func foodItemsToMap(foodItems []int) map[int]int {
-	elfs := map[int]int{}
+	var elfs = map[int]int{}
 	for i, j := 0, 0; i < len(foodItems); i++ {
 		eachElfFood := 0
 		for foodItems[i] != -1 {
@@ -33,10 +33,9 @@ func elvesFromFile(filePath string) map[int]int {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
-		switch line {
-		case "":
+		if line == "" {
 			foodItems = append(foodItems, -1)
-		default:
+		} else {
 			food, err := strconv.Atoi(line)
 			if err != nil {
 				panic(err)
