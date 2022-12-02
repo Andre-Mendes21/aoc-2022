@@ -80,7 +80,7 @@ func roundsFromFile(filePath string) map[int][]string {
 	return rounds
 }
 
-func oppositeToWin(object int) int {
+func objectToWin(object int) int {
 	var opposite int
 	switch object {
 	case ROCK:
@@ -93,6 +93,10 @@ func oppositeToWin(object int) int {
 	return opposite
 }
 
+func objectToLose(object int) int {
+	return objectToWin(objectToWin(object))
+}
+
 func totalScore(rounds map[int][]string) int {
 	var totalScore int
 	for key, val := range rounds {
@@ -102,7 +106,7 @@ func totalScore(rounds map[int][]string) int {
 			switch object {
 			case key:
 				totalScore += DREW
-			case oppositeToWin(key):
+			case objectToWin(key):
 				totalScore += WON
 			default:
 				totalScore += LOST
@@ -126,11 +130,11 @@ func totalScore2(rounds map[int][]string) int {
 			totalScore += score
 			switch score {
 			case WON:
-				totalScore += oppositeToWin(key)
+				totalScore += objectToWin(key)
 			case DREW:
 				totalScore += key
 			case LOST:
-				totalScore += oppositeToWin(oppositeToWin(key))
+				totalScore += objectToLose(key)
 			}
 		}
 	}
