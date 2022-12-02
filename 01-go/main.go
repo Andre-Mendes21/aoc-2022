@@ -41,21 +41,17 @@ func elvesFromFile(filePath string) []int {
 	return foodItems
 }
 
-func findMaxElf(elves []int) (maxTotal int) {
-	return elves[0]
-}
-
-func solvePartOne(filePath string) (result int) {
-	elves := elvesFromFile(filePath)
-	return findMaxElf(elves)
-}
-
 func findTopNElves(elves []int, n int) (maxTotal int) {
 	newN := int(math.Min(float64(n), float64(len(elves))))
 	for i := 0; i < newN; i++ {
 		maxTotal += elves[i]
 	}
 	return maxTotal
+}
+
+func solvePartOne(filePath string) (result int) {
+	elves := elvesFromFile(filePath)
+	return findTopNElves(elves, 1)
 }
 
 func solvePartTwo(filePath string) (result int) {
