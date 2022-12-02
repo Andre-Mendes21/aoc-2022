@@ -24,11 +24,11 @@ const (
 
 func roundToObject(round string) int {
 	switch round {
-	case "A", "X":
+	case "X":
 		return ROCK
-	case "B", "Y":
+	case "Y":
 		return PAPER
-	case "C", "Z":
+	case "Z":
 		return SCISSORS
 	default:
 		return -1
