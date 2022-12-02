@@ -8,21 +8,7 @@ import (
 	"strconv"
 )
 
-func foodItemsToMap(foodItems []int) map[int]int {
-	var elfs = map[int]int{}
-	for i, j := 0, 0; i < len(foodItems); i++ {
-		eachElfFood := 0
-		for foodItems[i] != -1 {
-			eachElfFood += foodItems[i]
-			i++
-		}
-		elfs[j] = eachElfFood
-		j++
-	}
-	return elfs
-}
-
-func elvesFromFile(filePath string) map[int]int {
+func elvesFromFile(filePath string) []int {
 	file, err := os.Open(filePath)
 	if err != nil {
 		panic(err)
@@ -30,27 +16,30 @@ func elvesFromFile(filePath string) map[int]int {
 	defer file.Close()
 
 	foodItems := make([]int, 0)
+	totalFood := 0
+	food := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line == "" {
-			foodItems = append(foodItems, -1)
+			foodItems = append(foodItems, totalFood)
+			totalFood = 0
 		} else {
-			food, err := strconv.Atoi(line)
+			food, err = strconv.Atoi(line)
 			if err != nil {
 				panic(err)
 			}
-			foodItems = append(foodItems, food)
+			totalFood += food
 		}
 	}
-	foodItems = append(foodItems, -1)
+	foodItems = append(foodItems, food)
 	if err := scanner.Err(); err != nil {
 		panic(err)
 	}
-	return foodItemsToMap(foodItems)
+	return foodItems
 }
 
-func findMaxElf(elves map[int]int) (elf, maxTotal int) {
+func findMaxElf(elves []int) (elf, maxTotal int) {
 	elf = 0
 	maxTotal = math.MinInt
 	for key, val := range elves {
@@ -67,13 +56,19 @@ func solvePartOne(filePath string) (elf, result int) {
 	return findMaxElf(elves)
 }
 
-func findTopNElves(elves map[int]int, n int) (maxTotal int) {
+func remove(s []int, index int) []int {
+	ret := make([]int, 0)
+	ret = append(ret, s[:index]...)
+	return append(ret, s[index+1:]...)
+}
+
+func findTopNElves(elves []int, n int) (maxTotal int) {
 	maxTotal = 0
 	newN := int(math.Min(float64(n), float64(len(elves))))
 	for i := 0; i < newN; i++ {
 		elf, total := findMaxElf(elves)
-		delete(elves, elf)
 		maxTotal += total
+		elves = remove(elves, elf)
 	}
 	return maxTotal
 }
