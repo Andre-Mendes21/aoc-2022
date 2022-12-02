@@ -86,9 +86,11 @@ func solvePartTwo(filePath string) (result int) {
 func main() {
 	for _, filePath := range os.Args[1:] {
 		fmt.Printf("Input file: %s\n", filePath)
-		// First Part
+
+		fmt.Printf("Part One:\n")
 		fmt.Println(solvePartOne(filePath))
-		// Second Part
+
+		fmt.Printf("\nPart Two:\n")
 		fmt.Println(solvePartTwo(filePath))
 	}
 }
