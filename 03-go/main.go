@@ -15,6 +15,7 @@ func itemToPriority(item rune) int {
 	case item >= 'a' && item <= 'z':
 		priority = int(item) - 96
 	}
+
 	return priority
 }
 
@@ -26,21 +27,21 @@ func removeRepeatRunes(str string) string {
 			newString += string(rn)
 		}
 	}
+
 	return newString
 }
 
 func findCommonItem(bag string) (commonItems int) {
-	usedItems := []rune{}
 	compart1 := bag[:len(bag)/2]
 	compart2 := bag[len(bag)/2:]
 	for _, vComp1 := range compart1 {
-		if !strings.Contains(string(usedItems), string(vComp1)) && strings.Contains(compart2, string(vComp1)) {
+		if strings.Contains(compart2, string(vComp1)) {
 			priority := itemToPriority(vComp1)
 			commonItems += priority
-
-			usedItems = append(usedItems, vComp1)
+			break
 		}
 	}
+
 	return commonItems
 }
 
@@ -55,10 +56,11 @@ func findBadge(bags []string) (acc int) {
 		if strings.Contains(noDupBags[1], string(rn)) && strings.Contains(noDupBags[2], string(rn)) {
 			priority := itemToPriority(rn)
 			acc += priority
+			break
 		}
 	}
-	return acc
 
+	return acc
 }
 
 func bagsFromFile(filePath string) (bags []string) {
@@ -85,6 +87,7 @@ func solvePartOne(filePath string) (acc int) {
 	for _, str := range bags {
 		acc += findCommonItem(str)
 	}
+
 	return acc
 }
 
@@ -93,6 +96,7 @@ func solvePartTwo(filePath string) (acc int) {
 	for i := 0; i < len(bags); i += 3 {
 		acc += findBadge(bags[i : i+3])
 	}
+
 	return acc
 }
 
