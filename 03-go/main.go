@@ -10,15 +10,15 @@ import (
 func itemToPriority(item rune) int {
 	var priority int
 	switch {
-	case item >= 65 && item <= 90:
+	case item >= 'A' && item <= 'Z':
 		priority = int(item) - 38
-	case item >= 97 && item <= 122:
+	case item >= 'a' && item <= 'z':
 		priority = int(item) - 96
 	}
 	return priority
 }
 
-func removeRepeats(str string) string {
+func removeRepeatRunes(str string) string {
 	var newString string
 	for i, rn := range str {
 		cutoff := strings.Index(str[i+1:], string(rn))
@@ -47,7 +47,7 @@ func findCommonItem(bag string) (commonItems int) {
 func findBadge(bags []string) (acc int) {
 	noDupBags := []string{}
 	for _, bag := range bags {
-		noDupBag := removeRepeats(bag)
+		noDupBag := removeRepeatRunes(bag)
 		noDupBags = append(noDupBags, noDupBag)
 	}
 
