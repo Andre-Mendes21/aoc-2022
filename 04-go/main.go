@@ -16,11 +16,16 @@ type Section struct {
 func newSection(lo, hi string) Section {
 	low, _ := strconv.Atoi(lo)
 	high, _ := strconv.Atoi(hi)
-
 	return Section{
 		lo: low,
 		hi: high,
 	}
+}
+
+func parseRangePair(str []string) (left, right []string) {
+	left = strings.Split(str[0], "-")
+	right = strings.Split(str[1], "-")
+	return left, right
 }
 
 func sectionsFromFile(filePath string) (sections1, sections2 []Section) {
@@ -32,19 +37,13 @@ func sectionsFromFile(filePath string) (sections1, sections2 []Section) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		splitSection := strings.Split(line, ",")
-		ids1 := strings.Split(splitSection[0], "-")
-		ids2 := strings.Split(splitSection[1], "-")
-
-		section1 := newSection(ids1[0], ids1[1])
-		section2 := newSection(ids2[0], ids2[1])
-
-		sections1 = append(sections1, section1)
-		sections2 = append(sections2, section2)
+		left, right := parseRangePair(splitSection)
+		sections1 = append(sections1, newSection(left[0], left[1]))
+		sections2 = append(sections2, newSection(right[0], right[1]))
 	}
 	if err := scanner.Err(); err != nil {
 		panic(err)
 	}
-
 	return sections1, sections2
 }
 
@@ -68,11 +67,8 @@ func solveBoth(filePath string, cmp func(sect1, sects2 Section) bool) (count int
 
 func main() {
 	for _, filepath := range os.Args[1:] {
-		fmt.Printf("Input file: %s\n", filepath)
-		fmt.Println("Part One")
-		fmt.Println(solveBoth(filepath, isContained))
-
-		fmt.Println("\nPart Two")
-		fmt.Println(solveBoth(filepath, isOverlap))
+		fmt.Printf("\nInput file: %s\n", filepath)
+		fmt.Println("Part One:", solveBoth(filepath, isContained))
+		fmt.Println("Part Two:", solveBoth(filepath, isOverlap))
 	}
 }
