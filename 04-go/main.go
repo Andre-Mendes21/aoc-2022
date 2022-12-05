@@ -49,21 +49,17 @@ func sectionsFromFile(filePath string) (sections1, sections2 []Section) {
 }
 
 func isContained(sects1, sects2 Section) bool {
-	sect1IsContained := sects1.lo >= sects2.lo && sects1.hi <= sects2.hi
-	sect2IsContained := sects2.lo >= sects1.lo && sects2.hi <= sects1.hi
-	return sect1IsContained || sect2IsContained
+	return sects1.lo <= sects2.lo && sects2.hi <= sects1.hi
 }
 
 func isOverlap(sects1, sects2 Section) bool {
-	sect1IsContained := sects1.lo <= sects2.hi && sects1.hi >= sects2.lo
-	sect2IsContained := sects2.lo <= sects1.hi && sects2.hi >= sects1.lo
-	return sect1IsContained || sect2IsContained
+	return sects1.lo <= sects2.lo && sects2.lo <= sects1.hi
 }
 
 func solveBoth(filePath string, cmp func(sect1, sects2 Section) bool) (count int) {
 	sects1, sects2 := sectionsFromFile(filePath)
 	for i := range sects1 {
-		if cmp(sects1[i], sects2[i]) {
+		if cmp(sects1[i], sects2[i]) || cmp(sects2[i], sects1[i]) {
 			count++
 		}
 	}
