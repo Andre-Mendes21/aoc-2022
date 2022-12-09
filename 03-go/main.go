@@ -68,6 +68,7 @@ func bagsFromFile(filePath string) (bags []string) {
 	if err != nil {
 		panic(err)
 	}
+	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {

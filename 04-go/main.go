@@ -32,7 +32,10 @@ func sectionsFromFile(filePath string) (sections1, sections2 []Section) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		panic(err)
+
 	}
+	defer file.Close()
+
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
