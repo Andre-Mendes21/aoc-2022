@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -122,7 +121,7 @@ func solvePartTwo(filePath string) (size int) {
 	spaceNeeded := UPDATE - unusedSpace
 	var smallestDirs = []int{}
 	findDirsSizeGreaterThanEqN(root, &smallestDirs, spaceNeeded)
-	currentUnusedSpace := math.MinInt
+	currentUnusedSpace := unusedSpace
 	for _, dirSize := range smallestDirs {
 		spaceIfRemoved := unusedSpace + (root.getTotalSize() - dirSize)
 		if spaceIfRemoved > currentUnusedSpace {
